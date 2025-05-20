@@ -58,6 +58,10 @@ def fetch_ohlcv(symbol, interval='5m', limit=100):
 def analyze(df, symbol, interval):
     global condition_threshold, tp_ratio, sl_ratio
     try:
+        # ✅ 데이터 길이 체크
+        if df is None or len(df) < 50:
+            print(f"[{symbol}-{interval}] 데이터 부족으로 분석 생략")
+            return
         df['rsi'] = RSIIndicator(df['close']).rsi()
         macd = MACD(df['close'])
         df['macd'] = macd.macd()
